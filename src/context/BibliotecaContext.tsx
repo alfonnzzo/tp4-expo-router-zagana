@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -65,12 +66,19 @@ export function ProveedorBiblioteca({ children }: { children: ReactNode }) {
   const [colas] = useState(crearColasIniciales);
   const [pilaVistos] = useState(() => new Pila<Libro>());
   const contadorAvisos = useRef(0);
+  const prestamosActuales = useRef<Prestamo[]>([]);
+  const programando = useRef(new Set<string>());
+  const cancelarAlTerminar = useRef(new Set<string>());
 
   const [sesionIniciada, setSesionIniciada] = useState(false);
   const [recientes, setRecientes] = useState<Libro[]>([]);
   const [prestamos, setPrestamos] = useState<Prestamo[]>([]);
   const [esperas, setEsperas] = useState<Esperas>(() => copiarEsperas(colas));
   const [avisos, setAvisos] = useState<Aviso[]>([]);
+
+  useEffect(() => {
+    prestamosActuales.current = prestamos;
+  }, [prestamos]);
 
   const iniciarSesion = useCallback(() => {
     setSesionIniciada(true);
@@ -141,21 +149,39 @@ export function ProveedorBiblioteca({ children }: { children: ReactNode }) {
   const activarRecordatorio = useCallback(
     async (isbn: string) => {
       const prestamo = prestamos.find((item) => item.isbn === isbn);
-      if (prestamo === undefined || prestamo.recordatorioId !== null) {
+      if (prestamo === undefined || prestamo.recordatorioId !== null || programando.current.has(isbn)) {
         return;
       }
-      const identificador = await programarRecordatorio(prestamo);
-      setPrestamos((actual) =>
-        actual.map((item) =>
-          item.isbn === isbn ? { ...item, recordatorioId: identificador } : item,
-        ),
-      );
+      programando.current.add(isbn);
+      cancelarAlTerminar.current.delete(isbn);
+      try {
+        const identificador = await programarRecordatorio(prestamo);
+        const sigueVigente = prestamosActuales.current.some((item) => item.isbn === isbn);
+        if (!sigueVigente || cancelarAlTerminar.current.has(isbn)) {
+          await cancelarRecordatorio(identificador);
+          return;
+        }
+        setPrestamos((actual) =>
+          actual.map((item) =>
+            item.isbn === isbn ? { ...item, recordatorioId: identificador } : item,
+          ),
+        );
+      } catch {
+        agregarAviso('No pudimos programar el recordatorio de ' + prestamo.titulo + '. Intentá de nuevo.');
+      } finally {
+        programando.current.delete(isbn);
+        cancelarAlTerminar.current.delete(isbn);
+      }
     },
-    [prestamos],
+    [prestamos, agregarAviso],
   );
 
   const desactivarRecordatorio = useCallback(
     async (isbn: string) => {
+      if (programando.current.has(isbn)) {
+        cancelarAlTerminar.current.add(isbn);
+        return;
+      }
       const prestamo = prestamos.find((item) => item.isbn === isbn);
       if (prestamo === undefined || prestamo.recordatorioId === null) {
         return;
