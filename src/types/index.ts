@@ -38,3 +38,10 @@ export type ResultadoReserva =
   | { tipo: 'prestamo'; devolucion: number }
   | { tipo: 'espera'; posicion: number }
   | { tipo: 'repetida' };
+
+export type ItemReservas =
+  | { clave: string; tipo: 'titulo'; texto: string }
+  | { clave: string; tipo: 'vacio'; mensaje: string }
+  | { clave: string; tipo: 'prestamo'; prestamo: Prestamo }
+  | { clave: string; tipo: 'espera'; reserva: ReservaEnEspera }
+  | { clave: string; tipo: 'aviso'; aviso: Aviso };

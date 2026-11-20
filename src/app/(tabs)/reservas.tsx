@@ -3,30 +3,20 @@ import { useCallback, useEffect, useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { CajaMensaje } from '@/components/CajaMensaje';
-import { EstadoVacio } from '@/components/EstadoVacio';
-import { FilaPrestamo } from '@/components/FilaPrestamo';
-import { FilaReservaEspera } from '@/components/FilaReservaEspera';
-import { TituloSeccion } from '@/components/TituloSeccion';
+import { ItemReservas } from '@/components/ItemReservas';
 import { colores, espaciado } from '@/constants/tema';
 import { useBiblioteca } from '@/context/BibliotecaContext';
 import { useCatalogo } from '@/context/CatalogoContext';
 import { usePermiso } from '@/hooks/usePermiso';
 import { obtenerReservasEnEspera } from '@/lib/reservas';
-import type { Aviso, EstadoPermiso, Prestamo, ReservaEnEspera } from '@/types';
-
-type ItemLista =
-  | { clave: string; tipo: 'titulo'; texto: string }
-  | { clave: string; tipo: 'vacio'; mensaje: string }
-  | { clave: string; tipo: 'prestamo'; prestamo: Prestamo }
-  | { clave: string; tipo: 'espera'; reserva: ReservaEnEspera }
-  | { clave: string; tipo: 'aviso'; aviso: Aviso };
+import type { Aviso, EstadoPermiso, ItemReservas as TipoItemReservas, Prestamo, ReservaEnEspera } from '@/types';
 
 function armarItems(
   prestamos: Prestamo[],
   reservas: ReservaEnEspera[],
   avisos: Aviso[],
-): ItemLista[] {
-  const items: ItemLista[] = [{ clave: 'titulo-prestamos', tipo: 'titulo', texto: 'Mis préstamos' }];
+): TipoItemReservas[] {
+  const items: TipoItemReservas[] = [{ clave: 'titulo-prestamos', tipo: 'titulo', texto: 'Mis préstamos' }];
   if (prestamos.length === 0) {
     items.push({ clave: 'vacio-prestamos', tipo: 'vacio', mensaje: 'No tenés préstamos activos.' });
   }
@@ -107,27 +97,13 @@ export default function MisReservas() {
       data={items}
       keyExtractor={(item) => item.clave}
       ListHeaderComponent={<CajaMensaje mensaje={describirNotificaciones(estado)} />}
-      renderItem={({ item }) => {
-        if (item.tipo === 'titulo') {
-          return <TituloSeccion texto={item.texto} />;
-        }
-        if (item.tipo === 'vacio') {
-          return <EstadoVacio mensaje={item.mensaje} />;
-        }
-        if (item.tipo === 'prestamo') {
-          return (
-            <FilaPrestamo
-              prestamo={item.prestamo}
-              onCambiarRecordatorio={cambiarRecordatorio}
-              onDevolver={devolver}
-            />
-          );
-        }
-        if (item.tipo === 'espera') {
-          return <FilaReservaEspera reserva={item.reserva} />;
-        }
-        return <CajaMensaje tono="aviso" mensaje={item.aviso.mensaje} />;
-      }}
+      renderItem={({ item }) => (
+        <ItemReservas
+          item={item}
+          onCambiarRecordatorio={cambiarRecordatorio}
+          onDevolver={devolver}
+        />
+      )}
     />
   );
 }
