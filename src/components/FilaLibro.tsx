@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Texto } from '@/components/Texto';
-import { colores, espaciado, radios, tamanios } from '@/constants/tema';
+import { colores, espaciado, opacidades, radios, tamanios } from '@/constants/tema';
 import type { Libro } from '@/types';
 
 type FilaLibroProps = {
@@ -39,6 +39,6 @@ const estilos = StyleSheet.create({
     gap: espaciado.xs,
   },
   presionada: {
-    opacity: 0.7,
+    opacity: opacidades.presionado,
   },
 });

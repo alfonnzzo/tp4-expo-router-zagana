@@ -33,7 +33,7 @@ export const TEXTOS: Record<Recurso, TextosRecurso> = {
   },
 };
 
-export function calcularEstado(respuesta: RespuestaSistema): EstadoPermiso {
+function calcularEstado(respuesta: RespuestaSistema): EstadoPermiso {
   if (respuesta.granted) {
     return 'concedido';
   }

@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Texto } from '@/components/Texto';
-import { colores, espaciado, pesos, radios, tamanios } from '@/constants/tema';
+import { colores, espaciado, opacidades, pesos, radios, tamanios } from '@/constants/tema';
 
 type Variante = 'primario' | 'secundario' | 'peligro';
 
@@ -45,10 +45,10 @@ const estilos = StyleSheet.create({
     fontWeight: pesos.fuerte,
   },
   deshabilitado: {
-    opacity: 0.4,
+    opacity: opacidades.deshabilitado,
   },
   presionado: {
-    opacity: 0.7,
+    opacity: opacidades.presionado,
   },
 });
 

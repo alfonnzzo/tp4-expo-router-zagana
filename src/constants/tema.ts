@@ -12,7 +12,6 @@ export const colores = {
   fondoAviso: '#FFF1D0',
   peligro: '#B3261E',
   fondoPeligro: '#FBE4E2',
-  deshabilitado: '#A7B0B8',
   camara: '#000000',
   textoCamara: '#FFFFFF',
 } as const;
@@ -23,12 +22,10 @@ export const espaciado = {
   m: 12,
   l: 16,
   xl: 24,
-  xxl: 32,
 } as const;
 
 export const radios = {
   s: 8,
-  m: 12,
 } as const;
 
 export const tamanios = {
@@ -37,13 +34,15 @@ export const tamanios = {
   subtitulo: 18,
   titulo: 24,
   icono: 24,
-  iconoGrande: 48,
   toqueMinimo: 44,
   borde: 1,
-  marcoEscaner: 220,
 } as const;
 
 export const pesos = {
-  normal: '400',
   fuerte: '600',
+} as const;
+
+export const opacidades = {
+  deshabilitado: 0.4,
+  presionado: 0.7,
 } as const;

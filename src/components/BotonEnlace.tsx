@@ -2,7 +2,7 @@ import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Texto } from '@/components/Texto';
-import { colores, espaciado, pesos, radios, tamanios } from '@/constants/tema';
+import { colores, espaciado, opacidades, pesos, radios, tamanios } from '@/constants/tema';
 
 type BotonEnlaceProps = {
   href: Href;
@@ -56,6 +56,6 @@ const estilos = StyleSheet.create({
     color: colores.primario,
   },
   presionado: {
-    opacity: 0.7,
+    opacity: opacidades.presionado,
   },
 });
