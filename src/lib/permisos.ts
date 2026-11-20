@@ -65,3 +65,7 @@ export async function solicitarPermiso(recurso: Recurso): Promise<EstadoPermiso>
     return 'preguntable';
   }
 }
+
+export function esRecurso(valor: string): valor is Recurso {
+  return valor === 'camara' || valor === 'notificaciones';
+}
