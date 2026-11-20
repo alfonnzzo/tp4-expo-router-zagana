@@ -1,4 +1,4 @@
-import { Link, type Href } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Texto } from '@/components/Texto';
@@ -12,19 +12,18 @@ type BotonEnlaceProps = {
 
 export function BotonEnlace({ href, titulo, primario = false }: BotonEnlaceProps) {
   return (
-    <Link href={href} asChild>
-      <Pressable
-        accessibilityRole="button"
-        style={({ pressed }) => [
-          estilos.boton,
-          primario ? estilos.fondoPrimario : estilos.fondoSecundario,
-          pressed && estilos.presionado,
-        ]}>
-        <Texto style={[estilos.texto, primario ? estilos.textoPrimario : estilos.textoSecundario]}>
-          {titulo}
-        </Texto>
-      </Pressable>
-    </Link>
+    <Pressable
+      accessibilityRole="button"
+      onPress={() => router.push(href)}
+      style={({ pressed }) => [
+        estilos.boton,
+        primario ? estilos.fondoPrimario : estilos.fondoSecundario,
+        pressed && estilos.presionado,
+      ]}>
+      <Texto style={[estilos.texto, primario ? estilos.textoPrimario : estilos.textoSecundario]}>
+        {titulo}
+      </Texto>
+    </Pressable>
   );
 }
 
