@@ -1,4 +1,4 @@
-import { StyleSheet, Switch, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { Boton } from '@/components/Boton';
 import { Texto } from '@/components/Texto';
@@ -13,19 +13,26 @@ type FilaPrestamoProps = {
 };
 
 export function FilaPrestamo({ prestamo, onCambiarRecordatorio, onDevolver }: FilaPrestamoProps) {
+  const recordatorioActivo = prestamo.recordatorioId !== null;
+
   return (
     <View style={estilos.fila}>
       <Texto variante="subtitulo">{prestamo.titulo}</Texto>
       <Texto variante="suave">Devolución: {formatearFecha(prestamo.devolucion)}</Texto>
-      <View style={estilos.recordatorio}>
+      <Pressable
+        accessibilityRole="switch"
+        accessibilityLabel={'Recordarme la devolución de ' + prestamo.titulo}
+        accessibilityState={{ checked: recordatorioActivo }}
+        onPress={() => onCambiarRecordatorio(prestamo.isbn, !recordatorioActivo)}
+        style={estilos.recordatorio}>
         <Texto>Recordarme</Texto>
-        <Switch
-          accessibilityLabel={'Recordarme la devolución de ' + prestamo.titulo}
-          value={prestamo.recordatorioId !== null}
-          onValueChange={(activar) => onCambiarRecordatorio(prestamo.isbn, activar)}
-          trackColor={{ false: colores.borde, true: colores.primario }}
-        />
-      </View>
+        <View pointerEvents="none">
+          <Switch
+            value={recordatorioActivo}
+            trackColor={{ false: colores.borde, true: colores.primario }}
+          />
+        </View>
+      </Pressable>
       <Boton titulo="Devolver" variante="secundario" onPress={() => onDevolver(prestamo.isbn)} />
     </View>
   );
