@@ -1,12 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router/js-tabs';
 import { StyleSheet } from 'react-native';
 
-import { colores, tamanios } from '@/constants/tema';
-
-function colorIcono(activo: boolean): string {
-  return activo ? colores.primario : colores.textoSuave;
-}
+import { IconoPestania } from '@/components/IconoPestania';
+import { colores } from '@/constants/tema';
 
 export default function LayoutPestanias() {
   return (
@@ -21,18 +17,14 @@ export default function LayoutPestanias() {
         options={{
           title: 'Catálogo',
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Ionicons name="library" size={tamanios.icono} color={colorIcono(focused)} />
-          ),
+          tabBarIcon: ({ focused }) => <IconoPestania nombre="library" activo={focused} />,
         }}
       />
       <Tabs.Screen
         name="reservas"
         options={{
           title: 'Mis reservas',
-          tabBarIcon: ({ focused }) => (
-            <Ionicons name="bookmarks" size={tamanios.icono} color={colorIcono(focused)} />
-          ),
+          tabBarIcon: ({ focused }) => <IconoPestania nombre="bookmarks" activo={focused} />,
         }}
       />
     </Tabs>
