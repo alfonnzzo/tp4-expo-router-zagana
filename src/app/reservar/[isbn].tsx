@@ -13,6 +13,7 @@ import { espaciado } from '@/constants/tema';
 import { useBiblioteca } from '@/context/BibliotecaContext';
 import { useCatalogo } from '@/context/CatalogoContext';
 import { esIsbnValido } from '@/lib/isbn';
+import { cerrarPantalla } from '@/lib/navegacion';
 import { leerParametro } from '@/lib/parametros';
 import { calcularDisponibles } from '@/lib/reservas';
 
@@ -24,14 +25,6 @@ export default function ConfirmarReserva() {
   const [mensajeError, setMensajeError] = useState<string | null>(null);
 
   const libro = esIsbnValido(isbn) ? libros.find((item) => item.isbn === isbn) : undefined;
-
-  function cerrar() {
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.replace('/');
-    }
-  }
 
   function confirmar() {
     if (libro === undefined) {
@@ -57,7 +50,7 @@ export default function ConfirmarReserva() {
     return (
       <Pantalla>
         <EstadoError mensaje={error} onReintentar={reintentar} />
-        <Boton titulo="Cancelar" variante="secundario" onPress={cerrar} />
+        <Boton titulo="Cancelar" variante="secundario" onPress={cerrarPantalla} />
       </Pantalla>
     );
   }
@@ -66,7 +59,7 @@ export default function ConfirmarReserva() {
     return (
       <Pantalla>
         <CajaMensaje tono="aviso" mensaje="No encontramos el libro que querés reservar." />
-        <Boton titulo="Cerrar" variante="secundario" onPress={cerrar} />
+        <Boton titulo="Cerrar" variante="secundario" onPress={cerrarPantalla} />
       </Pantalla>
     );
   }
@@ -102,7 +95,7 @@ export default function ConfirmarReserva() {
       {mensajeError !== null ? <CajaMensaje tono="peligro" mensaje={mensajeError} /> : null}
       <View style={estilos.acciones}>
         <Boton titulo="Confirmar" onPress={confirmar} deshabilitado={yaPrestado || yaEnEspera} />
-        <Boton titulo="Cancelar" variante="secundario" onPress={cerrar} />
+        <Boton titulo="Cancelar" variante="secundario" onPress={cerrarPantalla} />
       </View>
     </Pantalla>
   );
