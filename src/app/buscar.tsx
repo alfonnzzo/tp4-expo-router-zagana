@@ -6,8 +6,7 @@ import { EstadoCargando } from '@/components/EstadoCargando';
 import { EstadoError } from '@/components/EstadoError';
 import { EstadoVacio } from '@/components/EstadoVacio';
 import { FilaLibro } from '@/components/FilaLibro';
-import { Pantalla } from '@/components/Pantalla';
-import { espaciado } from '@/constants/tema';
+import { colores, espaciado } from '@/constants/tema';
 import { useBusqueda } from '@/hooks/useBusqueda';
 import { leerParametro } from '@/lib/parametros';
 
@@ -26,27 +25,34 @@ export default function Buscar() {
   }
 
   return (
-    <Pantalla>
-      <CampoTexto
-        etiqueta="Buscar por título o autor"
-        valor={texto}
-        onCambiar={(nuevo) => router.setParams({ q: nuevo })}
-        placeholder="Por ejemplo: Borges"
-      />
-      <FlatList
-        contentContainerStyle={estilos.contenido}
-        data={resultados}
-        keyExtractor={(libro) => libro.isbn}
-        renderItem={({ item }) => <FilaLibro libro={item} />}
-        ListEmptyComponent={estadoVacio}
-        keyboardShouldPersistTaps="handled"
-      />
-    </Pantalla>
+    <FlatList
+      style={estilos.lista}
+      contentContainerStyle={estilos.contenido}
+      contentInsetAdjustmentBehavior="automatic"
+      data={resultados}
+      keyExtractor={(libro) => libro.isbn}
+      renderItem={({ item }) => <FilaLibro libro={item} />}
+      ListHeaderComponent={
+        <CampoTexto
+          etiqueta="Buscar por título o autor"
+          valor={texto}
+          onCambiar={(nuevo) => router.setParams({ q: nuevo })}
+          placeholder="Por ejemplo: Borges"
+        />
+      }
+      ListEmptyComponent={estadoVacio}
+      keyboardShouldPersistTaps="handled"
+    />
   );
 }
 
 const estilos = StyleSheet.create({
+  lista: {
+    flex: 1,
+    backgroundColor: colores.fondo,
+  },
   contenido: {
+    padding: espaciado.l,
     gap: espaciado.s,
   },
 });

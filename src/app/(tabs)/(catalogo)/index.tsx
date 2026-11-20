@@ -24,6 +24,7 @@ export default function Catalogo() {
     <FlatList
       style={estilos.lista}
       contentContainerStyle={estilos.contenido}
+      contentInsetAdjustmentBehavior="automatic"
       data={libros}
       keyExtractor={(libro) => libro.isbn}
       renderItem={({ item }) => <FilaLibro libro={item} />}

@@ -8,8 +8,7 @@ import { EstadoCargando } from '@/components/EstadoCargando';
 import { EstadoError } from '@/components/EstadoError';
 import { EstadoVacio } from '@/components/EstadoVacio';
 import { FilaMostrador } from '@/components/FilaMostrador';
-import { Pantalla } from '@/components/Pantalla';
-import { espaciado } from '@/constants/tema';
+import { colores, espaciado } from '@/constants/tema';
 import { useBiblioteca } from '@/context/BibliotecaContext';
 import { useCatalogo } from '@/context/CatalogoContext';
 import type { Libro } from '@/types';
@@ -54,28 +53,31 @@ export default function Mostrador() {
   }
 
   return (
-    <Pantalla>
-      {resultado !== null ? <CajaMensaje tono={resultado.tono} mensaje={resultado.mensaje} /> : null}
-      <FlatList
-        style={estilos.lista}
-        contentContainerStyle={estilos.contenido}
-        data={librosConEspera}
-        keyExtractor={(libro) => libro.isbn}
-        renderItem={({ item }) => (
-          <FilaMostrador libro={item} personas={esperas[item.isbn] ?? []} onEntregar={entregar} />
-        )}
-        ListEmptyComponent={estadoVacio}
-      />
-      <Boton titulo="Cerrar sesión" variante="peligro" onPress={salir} />
-    </Pantalla>
+    <FlatList
+      style={estilos.lista}
+      contentContainerStyle={estilos.contenido}
+      contentInsetAdjustmentBehavior="automatic"
+      data={librosConEspera}
+      keyExtractor={(libro) => libro.isbn}
+      renderItem={({ item }) => (
+        <FilaMostrador libro={item} personas={esperas[item.isbn] ?? []} onEntregar={entregar} />
+      )}
+      ListHeaderComponent={
+        resultado !== null ? <CajaMensaje tono={resultado.tono} mensaje={resultado.mensaje} /> : undefined
+      }
+      ListEmptyComponent={estadoVacio}
+      ListFooterComponent={<Boton titulo="Cerrar sesión" variante="peligro" onPress={salir} />}
+    />
   );
 }
 
 const estilos = StyleSheet.create({
   lista: {
     flex: 1,
+    backgroundColor: colores.fondo,
   },
   contenido: {
+    padding: espaciado.l,
     gap: espaciado.s,
   },
 });
