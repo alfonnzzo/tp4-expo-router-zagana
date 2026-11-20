@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router/js-tabs';
+import { StyleSheet } from 'react-native';
 
 import { colores, tamanios } from '@/constants/tema';
 
@@ -13,7 +14,7 @@ export default function LayoutPestanias() {
       screenOptions={{
         tabBarActiveTintColor: colores.primario,
         tabBarInactiveTintColor: colores.textoSuave,
-        sceneStyle: { backgroundColor: colores.fondo },
+        sceneStyle: estilos.escena,
       }}>
       <Tabs.Screen
         name="(catalogo)"
@@ -37,3 +38,9 @@ export default function LayoutPestanias() {
     </Tabs>
   );
 }
+
+const estilos = StyleSheet.create({
+  escena: {
+    backgroundColor: colores.fondo,
+  },
+});
