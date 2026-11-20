@@ -5,6 +5,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Boton } from '@/components/Boton';
 import { CajaMensaje } from '@/components/CajaMensaje';
+import { EstadoCargando } from '@/components/EstadoCargando';
+import { EstadoError } from '@/components/EstadoError';
 import { FormularioIsbn } from '@/components/FormularioIsbn';
 import { ZonaCamara } from '@/components/ZonaCamara';
 import { colores, espaciado } from '@/constants/tema';
@@ -13,7 +15,7 @@ import { usePermiso } from '@/hooks/usePermiso';
 
 export default function Escanear() {
   const { estado, abrirAjustes } = usePermiso('camara');
-  const { libros, cargando, error } = useCatalogo();
+  const { libros, cargando, error, reintentar } = useCatalogo();
   const [aviso, setAviso] = useState<string | null>(null);
   const [falloCamara, setFalloCamara] = useState(false);
   const yaNavego = useRef(false);
@@ -32,12 +34,12 @@ export default function Escanear() {
       return;
     }
     if (cargando || error !== null) {
-      setAviso('El catálogo todavía no está disponible. Esperá unos segundos e intentá de nuevo.');
+      ultimoCodigo.current = null;
       return;
     }
     const libro = libros.find((item) => item.isbn === isbn);
     if (libro === undefined) {
-      setAviso('El libro con ISBN ' + isbn + ' no está en el catálogo. Podés seguir escaneando.');
+      setAviso('El libro con ISBN ' + isbn + ' no está en el catálogo. Probá con otro código.');
       return;
     }
     yaNavego.current = true;
@@ -72,6 +74,8 @@ export default function Escanear() {
         style={estilos.panel}
         contentContainerStyle={estilos.contenidoPanel}
         keyboardShouldPersistTaps="handled">
+        {cargando ? <EstadoCargando mensaje="Cargando el catálogo..." /> : null}
+        {error !== null ? <EstadoError mensaje={error} onReintentar={reintentar} /> : null}
         {aviso !== null ? (
           <View style={estilos.aviso}>
             <CajaMensaje tono="aviso" mensaje={aviso} />
