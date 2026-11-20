@@ -186,6 +186,21 @@ npx expo lint
 
 `npx expo-doctor` también pasó las 20 revisiones.
 
+## Capturas
+
+Las capturas se sacaron en un iPhone con Expo Go y están en la carpeta `capturas`.
+
+- 01-catalogo-con-datos.png: Catálogo con la lista cargada.
+- 02-buscador.png: búsqueda de "Borges" con dos resultados.
+- 03-detalle-libro-con-ejemplares.png: detalle de un libro con ejemplares disponibles.
+- 04-mis-reservas-con-prestamo.png: Mis reservas con un préstamo activo.
+- 05-escaner-concedido-isbn-invalido.png: escáner con la cámara activa y aviso de ISBN inválido.
+- 06-reservar-con-ejemplares.png: confirmación de una reserva con ejemplares.
+- 07-reservar-sin-ejemplares.png: confirmación de una reserva en lista de espera.
+- 08-permiso-notificaciones-bloqueado.png: pantalla previa con las notificaciones bloqueadas.
+- 09-mostrador-entrega-al-siguiente.png: mostrador después de entregar un libro.
+- 10-escaner-camara-bloqueada.png: escáner con la cámara bloqueada y opción de abrir Ajustes.
+
 ## Desafíos opcionales
 
 No se hicieron los desafíos opcionales: persistencia, pruebas, debounce, modo oscuro y development build.
