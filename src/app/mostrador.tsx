@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
@@ -40,6 +41,11 @@ export default function Mostrador() {
     });
   }
 
+  function salir() {
+    router.dismissTo('/');
+    cerrarSesion();
+  }
+
   let estadoVacio = <EstadoVacio mensaje="No hay libros con lista de espera." />;
   if (cargando) {
     estadoVacio = <EstadoCargando mensaje="Cargando el catálogo..." />;
@@ -60,7 +66,7 @@ export default function Mostrador() {
         )}
         ListEmptyComponent={estadoVacio}
       />
-      <Boton titulo="Cerrar sesión" variante="peligro" onPress={cerrarSesion} />
+      <Boton titulo="Cerrar sesión" variante="peligro" onPress={salir} />
     </Pantalla>
   );
 }

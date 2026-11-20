@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 
 import { Boton } from '@/components/Boton';
@@ -20,6 +21,7 @@ export default function Login() {
       return;
     }
     setError(null);
+    router.dismiss();
     iniciarSesion();
   }
 
