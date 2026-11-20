@@ -46,6 +46,7 @@ function calcularSegundos(devolucion: number): number {
 }
 
 export async function programarRecordatorio(prestamo: Prestamo): Promise<string> {
+  await crearCanalPrestamos();
   return scheduleNotificationAsync({
     content: {
       title: 'Devolución de un libro',
@@ -68,6 +69,7 @@ export async function cancelarRecordatorio(identificador: string): Promise<void>
 }
 
 export async function notificarLibroListo(titulo: string): Promise<void> {
+  await crearCanalPrestamos();
   await scheduleNotificationAsync({
     content: {
       title: 'Tu reserva está lista',
