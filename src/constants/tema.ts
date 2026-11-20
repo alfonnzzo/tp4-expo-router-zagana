@@ -36,6 +36,7 @@ export const tamanios = {
   icono: 24,
   toqueMinimo: 44,
   borde: 1,
+  alturaCamara: 320,
 } as const;
 
 export const pesos = {

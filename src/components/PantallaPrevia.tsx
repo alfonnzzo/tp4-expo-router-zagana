@@ -1,9 +1,9 @@
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform } from 'react-native';
 
 import { Boton } from '@/components/Boton';
 import { EstadoCargando } from '@/components/EstadoCargando';
+import { Pantalla } from '@/components/Pantalla';
 import { Texto } from '@/components/Texto';
-import { colores, espaciado } from '@/constants/tema';
 import { usePermiso } from '@/hooks/usePermiso';
 import { TEXTOS } from '@/lib/permisos';
 import type { Recurso } from '@/types';
@@ -26,37 +26,32 @@ export function PantallaPrevia({ recurso, onContinuar }: PantallaPreviaProps) {
   }
 
   if (estado === 'cargando') {
-    return <EstadoCargando />;
+    return (
+      <Pantalla>
+        <EstadoCargando />
+      </Pantalla>
+    );
   }
 
   if (estado === 'bloqueado') {
     return (
-      <View style={estilos.contenedor}>
+      <Pantalla>
         <Texto variante="titulo">{textos.titulo}</Texto>
         <Texto>El sistema ya no muestra el pedido de permiso. Activalo desde Ajustes.</Texto>
         <Texto variante="pequeno">{rutaAjustes}</Texto>
         <Boton titulo="Abrir Ajustes" onPress={abrirAjustes} />
-      </View>
+      </Pantalla>
     );
   }
 
   return (
-    <View style={estilos.contenedor}>
+    <Pantalla>
       <Texto variante="titulo">{textos.titulo}</Texto>
       <Texto>{textos.beneficio}</Texto>
       {estado === 'concedido' ? (
         <Texto variante="exito">Este permiso ya está concedido.</Texto>
       ) : null}
       <Boton titulo="Continuar" onPress={continuar} />
-    </View>
+    </Pantalla>
   );
 }
-
-const estilos = StyleSheet.create({
-  contenedor: {
-    flex: 1,
-    backgroundColor: colores.fondo,
-    padding: espaciado.xl,
-    gap: espaciado.l,
-  },
-});

@@ -60,7 +60,10 @@ export default function Escanear() {
   }
 
   return (
-    <View style={estilos.pantalla}>
+    <ScrollView
+      style={estilos.pantalla}
+      contentInsetAdjustmentBehavior="automatic"
+      keyboardShouldPersistTaps="handled">
       <ZonaCamara
         estado={estado}
         falloCamara={falloCamara}
@@ -70,10 +73,7 @@ export default function Escanear() {
         onPedirPermiso={() => router.push('/permisos/camara')}
         onAbrirAjustes={abrirAjustes}
       />
-      <ScrollView
-        style={estilos.panel}
-        contentContainerStyle={estilos.contenidoPanel}
-        keyboardShouldPersistTaps="handled">
+      <View style={estilos.panel}>
         {cargando ? <EstadoCargando mensaje="Cargando el catálogo..." /> : null}
         {error !== null ? <EstadoError mensaje={error} onReintentar={reintentar} /> : null}
         {aviso !== null ? (
@@ -83,8 +83,8 @@ export default function Escanear() {
           </View>
         ) : null}
         <FormularioIsbn onBuscar={abrirLibro} />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -94,9 +94,6 @@ const estilos = StyleSheet.create({
     backgroundColor: colores.fondo,
   },
   panel: {
-    flexGrow: 0,
-  },
-  contenidoPanel: {
     padding: espaciado.l,
     gap: espaciado.m,
   },

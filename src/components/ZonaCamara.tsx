@@ -5,7 +5,7 @@ import { Boton } from '@/components/Boton';
 import { CajaMensaje } from '@/components/CajaMensaje';
 import { EstadoCargando } from '@/components/EstadoCargando';
 import { Texto } from '@/components/Texto';
-import { colores, espaciado } from '@/constants/tema';
+import { colores, espaciado, tamanios } from '@/constants/tema';
 import { TEXTOS } from '@/lib/permisos';
 import type { EstadoPermiso } from '@/types';
 
@@ -87,7 +87,7 @@ export function ZonaCamara({
 
 const estilos = StyleSheet.create({
   camara: {
-    flex: 1,
+    height: tamanios.alturaCamara,
     backgroundColor: colores.camara,
   },
   vista: {
